@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopEase | Order Successful</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #f5f7fb;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #172554;
+            padding: 18px 6%;
+        }
+
+        .logo {
+            color: white;
+            font-size: 27px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 18px;
+        }
+
+        .success-card {
+            width: 100%;
+            max-width: 620px;
+            padding: 42px 35px;
+            background: white;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .success-icon {
+            width: 88px;
+            height: 88px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 22px;
+            background: #dcfce7;
+            color: #15803d;
+            border-radius: 50%;
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #166534;
+            font-size: clamp(28px, 5vw, 36px);
+            margin-bottom: 12px;
+        }
+
+        .success-message {
+            color: #475569;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+
+        .order-reference {
+            padding: 18px;
+            margin-bottom: 22px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .order-reference p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .order-id {
+            color: #172554;
+            font-size: 22px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .delivery-note {
+            padding: 14px;
+            margin-bottom: 28px;
+            background: #eff6ff;
+            color: #1e40af;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .primary-button {
+            background: #2563eb;
+            color: white;
+        }
+
+        .primary-button:hover {
+            background: #1d4ed8;
+        }
+
+        .secondary-button {
+            background: white;
+            color: #2563eb;
+            border: 1px solid #2563eb;
+        }
+
+        .secondary-button:hover {
+            background: #eff6ff;
+        }
+
+        footer {
+            padding: 20px;
+            background: #172554;
+            color: #cbd5e1;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 480px) {
+            .success-card {
+                padding: 32px 20px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a class="logo" th:href="@{/}">ShopEase</a>
+    </header>
+
+    <main>
+        <section class="success-card">
+
+            <div class="success-icon" aria-hidden="true">
+                &#10003;
+            </div>
+
+            <h1>Thank You!</h1>
+
+            <p class="success-message">
+                Your order has been placed successfully.
+                We appreciate your shopping with ShopEase.
+            </p>
+
+            <div class="order-reference">
+                <p>Your order reference number</p>
+
+                <strong class="order-id" th:text="${orderId}">
+                    ORDER-12345
+                </strong>
+            </div>
+
+            <div class="delivery-note">
+                <strong>Cash on Delivery</strong>
+                <p>Please keep the payment ready when your order arrives.</p>
+            </div>
+
+            <div class="actions">
+                <a class="button primary-button" th:href="@{/}">
+                    Continue Shopping
+                </a>
+
+                <a class="button secondary-button" th:href="@{/cart}">
+                    View Cart
+                </a>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 ShopEase. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>

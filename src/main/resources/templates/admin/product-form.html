@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopEase | Product Form</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1e293b;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #172554;
+            padding: 18px 6%;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: white;
+            font-size: 25px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: #dbeafe;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        main {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 35px 20px 55px;
+        }
+
+        .page-heading {
+            margin-bottom: 24px;
+        }
+
+        .page-heading h1 {
+            color: #172554;
+            font-size: clamp(27px, 4vw, 34px);
+            margin-bottom: 5px;
+        }
+
+        .page-heading p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .form-card {
+            background: white;
+            padding: 32px;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(15, 23, 42, 0.06);
+        }
+
+        .form-section-title {
+            color: #172554;
+            font-size: 19px;
+            margin-bottom: 22px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            color: #1e293b;
+            font-family: inherit;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        textarea {
+            min-height: 125px;
+            resize: vertical;
+        }
+
+        .field-hint {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .field-error {
+            display: block;
+            color: #b91c1c;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .error-banner {
+            padding: 13px 15px;
+            margin-bottom: 22px;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            background: #fef2f2;
+            color: #991b1b;
+            font-size: 14px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding-top: 10px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .save-button {
+            background: #2563eb;
+            color: white;
+        }
+
+        .save-button:hover {
+            background: #1d4ed8;
+        }
+
+        .cancel-button {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .cancel-button:hover {
+            background: #cbd5e1;
+        }
+
+        footer {
+            padding: 20px;
+            background: #172554;
+            color: #cbd5e1;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 16px 5%;
+            }
+
+            main {
+                padding: 25px 14px 40px;
+            }
+
+            .form-card {
+                padding: 23px 18px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .form-actions .button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar">
+            <a class="logo" th:href="@{/admin/dashboard}">
+                ShopEase Admin
+            </a>
+
+            <a class="back-link" th:href="@{/admin/products}">
+                &larr; Back to Products
+            </a>
+        </nav>
+    </header>
+
+    <main>
+
+        <section class="page-heading">
+            <h1 th:text="${product.id == null}
+                    ? 'Add New Product'
+                    : 'Edit Product'">
+                Product Form
+            </h1>
+
+            <p>
+                Enter the product details below and save your changes.
+            </p>
+        </section>
+
+        <section class="form-card">
+
+            <h2 class="form-section-title">Product Information</h2>
+
+            <p class="error-banner" th:if="${errorMessage != null}" th:text="${errorMessage}" role="alert">
+                Please correct the errors and try again.
+            </p>
+
+            <form th:object="${product}" th:action="${product.id == null}
+                    ? @{/admin/products}
+                    : @{/admin/products/update/{id}(id=${product.id})}" method="post">
+
+                <div class="form-group">
+                    <label for="name">
+                        Product Name <span class="required">*</span>
+                    </label>
+
+                    <input type="text" id="name" th:field="*{name}" placeholder="e.g. Wireless Headphones"
+                        maxlength="150" autocomplete="off" required>
+
+                    <span class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+                        Please enter a valid product name.
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+
+                    <textarea id="description" th:field="*{description}"
+                        placeholder="Describe the product, its features, and benefits..." maxlength="2000"></textarea>
+
+                    <span class="field-error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">
+                        Please check the description.
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">
+                        Price (₹) <span class="required">*</span>
+                    </label>
+
+                    <input type="number" id="price" th:field="*{price}" placeholder="e.g. 1499.00" min="0.01"
+                        step="0.01" required>
+
+                    <span class="field-hint">
+                        Enter the price in Indian rupees.
+                    </span>
+
+                    <span class="field-error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">
+                        Please enter a valid price.
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="stock">
+                        Stock Quantity <span class="required">*</span>
+                    </label>
+
+                    <input type="number" id="stock" th:field="*{stock}" placeholder="e.g. 50" min="0" step="1" required>
+
+                    <span class="field-hint">
+                        Enter the number of units available.
+                    </span>
+
+                    <span class="field-error" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}">
+                        Please enter a valid stock quantity.
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="imageUrl">Product Image URL</label>
+
+                    <input type="url" id="imageUrl" th:field="*{imageUrl}"
+                        placeholder="https://example.com/product-image.jpg" maxlength="1000">
+
+                    <span class="field-hint">
+                        Optional. Enter a publicly accessible image URL.
+                    </span>
+
+                    <span class="field-error" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}">
+                        Please enter a valid image URL.
+                    </span>
+                </div>
+
+                <div class="form-actions">
+                    <a class="button cancel-button" th:href="@{/admin/products}">
+                        Cancel
+                    </a>
+
+                    <button class="button save-button" type="submit">
+                        <span th:text="${product.id == null}
+                                ? 'Save Product'
+                                : 'Update Product'">
+                            Save Product
+                        </span>
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 ShopEase. Admin Panel</p>
+    </footer>
+
+</body>
+
+</html>

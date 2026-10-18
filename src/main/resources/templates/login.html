@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopEase | Admin Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #dbeafe, #f8fafc);
+            color: #1e293b;
+        }
+
+        header {
+            background: #172554;
+            padding: 18px 6%;
+        }
+
+        .logo {
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 35px 18px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 10px 35px rgba(15, 23, 42, 0.12);
+        }
+
+        .login-icon {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #172554;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .message {
+            padding: 12px 14px;
+            border-radius: 7px;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .error-message {
+            color: #991b1b;
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+        }
+
+        .success-message {
+            color: #166534;
+            background: #dcfce7;
+            border: 1px solid #bbf7d0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .login-button:hover {
+            background: #1d4ed8;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 23px;
+            text-align: center;
+            color: #2563eb;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            padding: 18px;
+            background: #172554;
+            color: #cbd5e1;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 26px 20px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a class="logo" th:href="@{/}">ShopEase</a>
+    </header>
+
+    <main>
+        <section class="login-card">
+
+            <div class="login-icon" aria-hidden="true">
+                &#128274;
+            </div>
+
+            <h1>Admin Login</h1>
+
+            <p class="subtitle">
+                Sign in to manage your ShopEase store.
+            </p>
+
+            <p class="message error-message" th:if="${param.error}" role="alert">
+                Invalid username or password. Please try again.
+            </p>
+
+            <p class="message success-message" th:if="${param.logout}" role="status">
+                You have successfully logged out.
+            </p>
+
+            <form th:action="@{/admin/login}" method="post">
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+
+                    <input type="text" id="username" name="username" placeholder="Enter your username"
+                        autocomplete="username" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+
+                    <input type="password" id="password" name="password" placeholder="Enter your password"
+                        autocomplete="current-password" required>
+                </div>
+
+                <button class="login-button" type="submit">
+                    Sign In
+                </button>
+
+            </form>
+
+            <a class="back-link" th:href="@{/}">
+                &larr; Back to ShopEase
+            </a>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 ShopEase. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>

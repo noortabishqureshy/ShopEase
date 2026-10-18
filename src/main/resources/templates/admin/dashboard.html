@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopEase | Admin Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1e293b;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 18px 6%;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .store-link {
+            color: #dbeafe;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .store-link:hover {
+            color: white;
+        }
+
+        .logout-button {
+            border: 1px solid #93c5fd;
+            border-radius: 7px;
+            background: transparent;
+            color: white;
+            padding: 9px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background: #1e3a8a;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 38px 22px 55px;
+        }
+
+        .welcome-panel {
+            padding: 35px;
+            margin-bottom: 32px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.15);
+        }
+
+        .welcome-panel h1 {
+            font-size: clamp(27px, 4vw, 36px);
+            margin-bottom: 8px;
+        }
+
+        .welcome-panel p {
+            color: #dbeafe;
+            max-width: 650px;
+        }
+
+        .section-title {
+            color: #172554;
+            font-size: 24px;
+            margin-bottom: 18px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 22px;
+        }
+
+        .dashboard-card {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 25px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.09);
+        }
+
+        .card-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 54px;
+            height: 54px;
+            margin-bottom: 18px;
+            border-radius: 12px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 27px;
+        }
+
+        .dashboard-card h3 {
+            color: #172554;
+            font-size: 19px;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-card p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .card-link {
+            display: inline-block;
+            padding: 10px 16px;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .card-link:hover {
+            background: #1d4ed8;
+        }
+
+        .info-panel {
+            margin-top: 30px;
+            padding: 22px;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            background: #eff6ff;
+            color: #1e40af;
+        }
+
+        .info-panel h3 {
+            margin-bottom: 6px;
+        }
+
+        footer {
+            padding: 20px;
+            background: #172554;
+            color: #cbd5e1;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 16px 5%;
+            }
+
+            .navbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .header-actions {
+                flex-wrap: wrap;
+            }
+
+            main {
+                padding: 25px 15px 40px;
+            }
+
+            .welcome-panel {
+                padding: 25px 20px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar">
+            <a class="logo" th:href="@{/admin/dashboard}">
+                ShopEase Admin
+            </a>
+
+            <div class="header-actions">
+                <a class="store-link" th:href="@{/}">
+                    View Store
+                </a>
+
+                <form th:action="@{/admin/logout}" method="post">
+                    <button class="logout-button" type="submit">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+
+        <section class="welcome-panel">
+            <h1>Admin Dashboard</h1>
+            <p>
+                Welcome to ShopEase administration.
+                Manage your store products and keep your catalog up to date.
+            </p>
+        </section>
+
+        <h2 class="section-title">Management</h2>
+
+        <section class="dashboard-grid">
+
+            <article class="dashboard-card">
+                <div class="card-icon" aria-hidden="true">
+                    &#128230;
+                </div>
+
+                <h3>Manage Products</h3>
+
+                <p>
+                    Add new products, update product details,
+                    manage prices, and maintain stock information.
+                </p>
+
+                <a class="card-link" th:href="@{/admin/products}">
+                    Manage Products &rarr;
+                </a>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="card-icon" aria-hidden="true">
+                    &#128722;
+                </div>
+
+                <h3>View Store</h3>
+
+                <p>
+                    Visit the customer-facing ShopEase homepage
+                    and check how products appear in your store.
+                </p>
+
+                <a class="card-link" th:href="@{/}">
+                    Open Store &rarr;
+                </a>
+            </article>
+
+        </section>
+
+        <section class="info-panel">
+            <h3>Store Management</h3>
+            <p>
+                Keep product names, descriptions, prices, and stock
+                quantities accurate so customers can shop confidently.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 ShopEase. Admin Dashboard</p>
+    </footer>
+
+</body>
+
+</html>

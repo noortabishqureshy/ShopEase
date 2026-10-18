@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout | ShopEase</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --dark: #172554;
+            --text: #1f2937;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --background: #f8fafc;
+            --danger: #dc2626;
+            --success: #15803d;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        textarea {
+            font: inherit;
+        }
+
+        .container {
+            width: min(1000px, 94%);
+            margin: 35px auto 55px;
+            padding: 28px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding-bottom: 22px;
+            margin-bottom: 28px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--dark);
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+        }
+
+        .brand-icon {
+            display: inline-grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--primary);
+            color: #ffffff;
+            font-size: 23px;
+        }
+
+        .subtitle {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 280px;
+            align-items: start;
+            gap: 28px;
+        }
+
+        .checkout-form-panel {
+            min-width: 0;
+        }
+
+        .section-heading {
+            margin-bottom: 23px;
+        }
+
+        .section-heading h1 {
+            margin: 0;
+            color: var(--dark);
+            font-size: clamp(26px, 4vw, 34px);
+            letter-spacing: -0.8px;
+        }
+
+        .section-heading p {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 21px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .required-mark {
+            color: var(--danger);
+        }
+
+        .form-control {
+            display: block;
+            width: 100%;
+            min-height: 47px;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            background: #ffffff;
+            color: var(--text);
+            outline: none;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.13);
+        }
+
+        textarea.form-control {
+            min-height: 125px;
+            resize: vertical;
+        }
+
+        .field-error {
+            margin: 6px 0 0;
+            color: var(--danger);
+            font-size: 12px;
+        }
+
+        .error-notice {
+            padding: 13px 16px;
+            margin-bottom: 22px;
+            border: 1px solid #fecaca;
+            border-radius: 9px;
+            background: #fef2f2;
+            color: #991b1b;
+            font-size: 14px;
+        }
+
+        .payment-section {
+            margin: 27px 0;
+            padding: 20px;
+            border: 1px solid #c7d2fe;
+            border-radius: 12px;
+            background: #f5f7ff;
+        }
+
+        .payment-section h2 {
+            margin: 0 0 13px;
+            color: var(--dark);
+            font-size: 17px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+            border: 1px solid #c7d2fe;
+            border-radius: 10px;
+            background: #ffffff;
+        }
+
+        .payment-icon {
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: #eef2ff;
+            font-size: 21px;
+        }
+
+        .payment-option strong {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        .payment-option p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .button {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            min-height: 44px;
+            padding: 11px 17px;
+            border: 1px solid transparent;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        .primary-button {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        .primary-button:hover {
+            background: var(--primary-hover);
+            border-color: var(--primary-hover);
+            color: #ffffff;
+            box-shadow: 0 5px 12px rgba(79, 70, 229, 0.18);
+            transform: translateY(-1px);
+        }
+
+        .secondary-button {
+            background: #ffffff;
+            border-color: #cbd5e1;
+            color: #334155;
+        }
+
+        .secondary-button:hover {
+            background: #f1f5f9;
+            color: var(--dark);
+        }
+
+        .button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid rgba(79, 70, 229, 0.3);
+            outline-offset: 3px;
+        }
+
+        .form-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 26px;
+        }
+
+        .place-order-button {
+            flex: 1;
+            min-height: 50px;
+            font-size: 15px;
+        }
+
+        .info-panel {
+            padding: 22px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: #f8fafc;
+        }
+
+        .info-panel h2 {
+            margin: 0 0 17px;
+            color: var(--dark);
+            font-size: 18px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            margin-bottom: 20px;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-icon {
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            width: 35px;
+            height: 35px;
+            border-radius: 9px;
+            background: #eef2ff;
+            font-size: 17px;
+        }
+
+        .info-item strong {
+            display: block;
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        .info-item p {
+            margin: 3px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .secure-note {
+            margin-top: 22px;
+            padding-top: 17px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .site-footer {
+            margin-top: 30px;
+            color: var(--muted);
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .site-footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 760px) {
+            .checkout-layout {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .info-panel {
+                order: 2;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .container {
+                width: 96%;
+                margin: 15px auto 30px;
+                padding: 17px;
+                border-radius: 13px;
+            }
+
+            .page-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 13px;
+            }
+
+            .brand {
+                font-size: 24px;
+            }
+
+            .section-heading h1 {
+                font-size: 27px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .button {
+                width: 100%;
+            }
+
+            .payment-section,
+            .info-panel {
+                padding: 16px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <!-- Page header -->
+
+        <header class="page-header">
+            <div>
+                <a th:href="@{/}" class="brand">
+                    <span class="brand-icon">S</span>
+                    <span>ShopEase</span>
+                </a>
+
+                <p class="subtitle">
+                    A simple and secure shopping experience.
+                </p>
+            </div>
+
+            <a th:href="@{/cart}" class="button secondary-button">
+                ← Back to Cart
+            </a>
+        </header>
+
+        <div class="checkout-layout">
+
+            <!-- Checkout form -->
+
+            <section class="checkout-form-panel">
+
+                <div class="section-heading">
+                    <h1>Checkout</h1>
+                    <p>Enter your delivery details to place your order.</p>
+                </div>
+
+                <!-- Checkout error -->
+
+                <div th:if="${checkoutError}" class="error-notice" role="alert" th:text="${checkoutError}">
+                    Please check your checkout details.
+                </div>
+
+                <form th:action="@{/checkout}" th:object="${checkoutRequest}" method="post">
+
+                    <!-- Customer name -->
+
+                    <div class="form-group">
+                        <label for="customerName">
+                            Full Name <span class="required-mark">*</span>
+                        </label>
+
+                        <input type="text" id="customerName" th:field="*{customerName}" class="form-control"
+                            placeholder="Enter your full name" autocomplete="name" maxlength="100" required>
+
+                        <p class="field-error" th:if="${#fields.hasErrors('customerName')}" th:errors="*{customerName}">
+                            Please enter your name.
+                        </p>
+                    </div>
+
+                    <!-- Phone number -->
+
+                    <div class="form-group">
+                        <label for="phone">
+                            Phone Number <span class="required-mark">*</span>
+                        </label>
+
+                        <input type="tel" id="phone" th:field="*{phone}" class="form-control"
+                            placeholder="Enter your 10-digit phone number" autocomplete="tel" inputmode="numeric"
+                            maxlength="10" pattern="[0-9]{10}" title="Enter a 10-digit phone number" required>
+
+                        <p class="field-error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
+                            Please enter a valid phone number.
+                        </p>
+                    </div>
+
+                    <!-- Delivery address -->
+
+                    <div class="form-group">
+                        <label for="address">
+                            Delivery Address <span class="required-mark">*</span>
+                        </label>
+
+                        <textarea id="address" th:field="*{address}" class="form-control"
+                            placeholder="House number, street, area, city, state and PIN code"
+                            autocomplete="street-address" maxlength="500" required></textarea>
+
+                        <p class="field-error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
+                            Please enter your delivery address.
+                        </p>
+                    </div>
+
+                    <!-- Payment method -->
+
+                    <section class="payment-section">
+                        <h2>Payment Method</h2>
+
+                        <div class="payment-option">
+                            <div class="payment-icon" aria-hidden="true">
+                                💵
+                            </div>
+
+                            <div>
+                                <strong>Cash on Delivery</strong>
+                                <p>
+                                    Pay for your order when it is delivered
+                                    to your address.
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Form actions -->
+
+                    <div class="form-actions">
+
+                        <a th:href="@{/cart}" class="button secondary-button">
+                            ← Back to Cart
+                        </a>
+
+                        <button type="submit" class="button primary-button place-order-button">
+                            Place Order →
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+            <!-- Helpful information -->
+
+            <aside class="info-panel">
+
+                <h2>Delivery Information</h2>
+
+                <div class="info-item">
+                    <div class="info-icon" aria-hidden="true">📍</div>
+                    <div>
+                        <strong>Delivery Address</strong>
+                        <p>
+                            Double-check your address to help ensure
+                            your order reaches the correct location.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon" aria-hidden="true">📞</div>
+                    <div>
+                        <strong>Contact Number</strong>
+                        <p>
+                            Provide an accurate phone number for
+                            delivery-related communication.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon" aria-hidden="true">💵</div>
+                    <div>
+                        <strong>Cash on Delivery</strong>
+                        <p>
+                            Your selected payment method is
+                            Cash on Delivery.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="secure-note">
+                    🔒 Your checkout details are submitted to ShopEase
+                    for order processing.
+                </div>
+
+            </aside>
+
+        </div>
+
+        <footer class="site-footer">
+            <p>© 2026 ShopEase. Happy shopping!</p>
+        </footer>
+
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+
+    <title>ShopEase | Discover Your Next Favorite</title>
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --navy: #172554;
+            --text: #172033;
+            --muted: #64748b;
+            --surface: #ffffff;
+            --background: #f7f9fc;
+            --border: #e2e8f0;
+            --success: #15803d;
+            --shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 95px;
+        }
+
+        body {
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            color: var(--text);
+            background: var(--background);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        .announcement {
+            background: var(--navy);
+            color: #eaf1ff;
+            text-align: center;
+            padding: 9px 16px;
+            font-size: 12px;
+            letter-spacing: 0.4px;
+        }
+
+        .announcement strong {
+            color: white;
+        }
+
+        /* Navigation */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navbar {
+            max-width: 1320px;
+            min-height: 76px;
+            margin: auto;
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--navy);
+            font-size: 25px;
+            font-weight: 850;
+            letter-spacing: -1px;
+            white-space: nowrap;
+        }
+
+        .logo-mark {
+            width: 39px;
+            height: 39px;
+            display: grid;
+            place-items: center;
+            background: var(--primary);
+            color: white;
+            border-radius: 12px;
+            font-size: 22px;
+            box-shadow: 0 5px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #475569;
+            font-size: 14px;
+            font-weight: 650;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links .cart-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--primary);
+            background: #eff6ff;
+            border-radius: 10px;
+            padding: 10px 14px;
+        }
+
+        .hero-wrap {
+            padding: 34px 28px 0;
+        }
+
+        .hero {
+            max-width: 1264px;
+            min-height: 390px;
+            margin: auto;
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            border-radius: 28px;
+            background:
+                radial-gradient(circle at 78% 35%, rgba(147, 197, 253, 0.6), transparent 30%),
+                linear-gradient(115deg, #eff6ff 0%, #e7edff 55%, #dbeafe 100%);
+        }
+
+        .hero-content {
+            padding: 48px 0 48px 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-dark);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(37, 99, 235, 0.12);
+            padding: 7px 13px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        .hero h1 {
+            max-width: 590px;
+            color: var(--navy);
+            font-size: clamp(36px, 4.4vw, 59px);
+            line-height: 1.1;
+            letter-spacing: -2.4px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            max-width: 470px;
+            color: #52627a;
+            font-size: 16px;
+            margin-bottom: 27px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 9px;
+            min-height: 48px;
+            padding: 12px 21px;
+            border: 0;
+            border-radius: 12px;
+            font-weight: 750;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            color: white;
+            background: var(--primary);
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            color: var(--navy);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+
+        .hero-art {
+            min-height: 360px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px 28px 25px 0;
+            position: relative;
+        }
+
+        .hero-orbit {
+            position: absolute;
+            width: min(31vw, 330px);
+            aspect-ratio: 1;
+            border: 1px solid rgba(37, 99, 235, 0.15);
+            border-radius: 50%;
+        }
+
+        .hero-orbit::before {
+            content: "";
+            position: absolute;
+            inset: 22px;
+            border: 1px dashed rgba(37, 99, 235, 0.22);
+            border-radius: 50%;
+        }
+
+        .hero-product {
+            width: min(100%, 390px);
+            aspect-ratio: 1;
+            display: grid;
+            place-items: center;
+            position: relative;
+            z-index: 1;
+            font-size: clamp(100px, 13vw, 175px);
+            filter: drop-shadow(0 22px 18px rgba(23, 37, 84, 0.12));
+        }
+
+        .floating-tag {
+            position: absolute;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(23, 37, 84, 0.1);
+            font-size: 12px;
+            color: #475569;
+        }
+
+        .floating-tag strong {
+            display: block;
+            color: var(--navy);
+            font-size: 13px;
+        }
+
+        .tag-one {
+            top: 55px;
+            right: 15px;
+        }
+
+        .tag-two {
+            bottom: 48px;
+            left: 8px;
+        }
+
+        .tag-icon {
+            width: 35px;
+            height: 35px;
+            display: grid;
+            place-items: center;
+            background: #eff6ff;
+            border-radius: 10px;
+            font-size: 19px;
+        }
+
+        .benefits {
+            max-width: 1264px;
+            margin: 24px auto 0;
+            padding: 0 28px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 18px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+        }
+
+        .benefit-icon {
+            flex-shrink: 0;
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            background: #eff6ff;
+            border-radius: 12px;
+            font-size: 21px;
+        }
+
+        .benefit strong {
+            display: block;
+            color: var(--navy);
+            font-size: 13px;
+        }
+
+        .benefit span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .main-content {
+            max-width: 1320px;
+            margin: auto;
+            padding: 58px 28px 70px;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 23px;
+        }
+
+        .section-kicker {
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 850;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .section-heading h2 {
+            color: var(--navy);
+            font-size: clamp(25px, 3vw, 33px);
+            letter-spacing: -1px;
+            line-height: 1.25;
+        }
+
+        .section-description {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 17px;
+            margin-bottom: 56px;
+        }
+
+        .category-card {
+            min-height: 135px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 17px;
+            transition: 0.2s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            border-color: #bfdbfe;
+            box-shadow: var(--shadow);
+        }
+
+        .category-icon {
+            width: 59px;
+            height: 59px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            background: #eff6ff;
+            border-radius: 16px;
+            font-size: 29px;
+        }
+
+        .category-card:nth-child(2) .category-icon {
+            background: #fce7f3;
+        }
+
+        .category-card:nth-child(3) .category-icon {
+            background: #dcfce7;
+        }
+
+        .category-card:nth-child(4) .category-icon {
+            background: #fef3c7;
+        }
+
+        .category-card strong {
+            display: block;
+            color: var(--navy);
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .category-card span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .product-section {
+            scroll-margin-top: 105px;
+        }
+
+        .search-panel {
+            width: min(100%, 360px);
+            position: relative;
+        }
+
+        .search-panel input {
+            width: 100%;
+            height: 46px;
+            padding: 0 15px 0 43px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            outline: none;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .search-panel input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            pointer-events: none;
+            font-size: 18px;
+        }
+
+        #searchMessage {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 0 0 18px;
+            min-height: 21px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 21px;
+        }
+
+        .product-card {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: white;
+            border: 1px solid #edf0f5;
+            border-radius: 17px;
+            box-shadow: 0 3px 12px rgba(15, 23, 42, 0.025);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 13px 32px rgba(15, 23, 42, 0.09);
+        }
+
+        .product-image,
+        .product-image-placeholder {
+            width: 100%;
+            height: 220px;
+            display: block;
+            object-fit: contain;
+            padding: 17px;
+            background: #f8fafc;
+        }
+
+        .product-image-placeholder {
+            display: grid;
+            place-items: center;
+            color: #94a3b8;
+            font-size: 48px;
+        }
+
+        .product-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 18px;
+        }
+
+        .product-info h3 {
+            color: var(--navy);
+            font-size: 16px;
+            line-height: 1.4;
+            margin-bottom: 7px;
+            overflow-wrap: anywhere;
+        }
+
+        .product-description {
+            min-height: 42px;
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .product-price {
+            color: var(--success);
+            font-size: 21px;
+            font-weight: 850;
+            letter-spacing: -0.5px;
+        }
+
+        .product-stock {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 4px 0 16px;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            margin-top: auto;
+            min-height: 43px;
+            padding: 10px 12px;
+            border: 0;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            font-size: 13px;
+            font-weight: 750;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-to-cart-btn:hover:not(:disabled) {
+            background: var(--primary-dark);
+        }
+
+        .add-to-cart-btn:disabled {
+            background: #cbd5e1;
+            color: #475569;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            padding: 55px 20px;
+            text-align: center;
+            background: white;
+            border: 1px dashed #cbd5e1;
+            border-radius: 17px;
+            color: var(--muted);
+        }
+
+        .empty-icon {
+            display: block;
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            color: var(--navy);
+            margin-bottom: 7px;
+        }
+
+        .bottom-promo {
+            margin-top: 65px;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 22px;
+            background: linear-gradient(110deg, #172554, #1e40af);
+            border-radius: 22px;
+            color: white;
+        }
+
+        .bottom-promo h2 {
+            font-size: clamp(22px, 3vw, 30px);
+            margin-bottom: 5px;
+        }
+
+        .bottom-promo p {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .bottom-promo .btn {
+            flex-shrink: 0;
+            color: var(--navy);
+            background: white;
+        }
+
+        .site-footer {
+            background: #101b38;
+            color: #cbd5e1;
+            padding: 42px 28px 20px;
+        }
+
+        .footer-inner {
+            max-width: 1264px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding-bottom: 30px;
+        }
+
+        .footer-brand {
+            max-width: 330px;
+        }
+
+        .footer-brand .logo {
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .footer-brand p {
+            font-size: 13px;
+            color: #a8b4ca;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding-top: 12px;
+        }
+
+        .footer-links a {
+            font-size: 13px;
+            color: #dbe4f3;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            max-width: 1264px;
+            margin: auto;
+            padding-top: 18px;
+            border-top: 1px solid rgba(203, 213, 225, 0.15);
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible {
+            outline: 3px solid #93c5fd;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 1050px) {
+            .hero-content {
+                padding-left: 38px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .hero-art {
+                padding-right: 15px;
+            }
+
+            .tag-one {
+                right: 4px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .announcement {
+                font-size: 11px;
+            }
+
+            .navbar {
+                padding: 13px 17px;
+                gap: 14px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .nav-links {
+                gap: 13px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .nav-links .cart-link {
+                padding: 8px 10px;
+            }
+
+            .hero-wrap {
+                padding: 18px 15px 0;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                border-radius: 22px;
+            }
+
+            .hero-content {
+                padding: 33px 25px 5px;
+            }
+
+            .hero h1 {
+                font-size: clamp(36px, 10vw, 48px);
+                letter-spacing: -1.5px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .hero-art {
+                min-height: 235px;
+                padding: 0 20px 15px;
+            }
+
+            .hero-orbit {
+                width: 220px;
+            }
+
+            .hero-product {
+                width: 230px;
+                font-size: 115px;
+            }
+
+            .tag-one {
+                top: 20px;
+                right: 0;
+            }
+
+            .tag-two {
+                bottom: 15px;
+                left: 0;
+            }
+
+            .floating-tag {
+                padding: 8px 10px;
+            }
+
+            .benefits {
+                padding: 0 15px;
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .benefit {
+                padding: 13px;
+            }
+
+            .main-content {
+                padding: 42px 15px 48px;
+            }
+
+            .category-grid {
+                gap: 11px;
+                margin-bottom: 43px;
+            }
+
+            .category-card {
+                min-height: 110px;
+                gap: 10px;
+                padding: 13px;
+            }
+
+            .category-icon {
+                width: 43px;
+                height: 43px;
+                font-size: 22px;
+                border-radius: 12px;
+            }
+
+            .category-card strong {
+                font-size: 12px;
+            }
+
+            .category-card span {
+                font-size: 11px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .product-image,
+            .product-image-placeholder {
+                height: 155px;
+                padding: 10px;
+            }
+
+            .product-info {
+                padding: 13px;
+            }
+
+            .product-info h3 {
+                font-size: 14px;
+            }
+
+            .product-description {
+                font-size: 11px;
+                min-height: 35px;
+            }
+
+            .product-price {
+                font-size: 18px;
+            }
+
+            .section-heading {
+                align-items: stretch;
+            }
+
+            .search-panel {
+                width: 100%;
+            }
+
+            .bottom-promo {
+                padding: 24px 20px;
+                margin-top: 45px;
+            }
+
+            .site-footer {
+                padding: 32px 20px 18px;
+            }
+
+            .footer-links {
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .navbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: space-between;
+                gap: 9px;
+            }
+
+            .nav-links a {
+                font-size: 11px;
+            }
+
+            .category-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .product-image,
+            .product-image-placeholder {
+                height: 135px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="announcement">
+        Make room for something great —
+        <strong>discover your next favorite today.</strong>
+    </div>
+
+    <!-- Navbar: search bar removed -->
+    <header class="site-header">
+        <nav class="navbar" aria-label="Main navigation">
+
+            <a class="logo" th:href="@{/}" aria-label="ShopEase home">
+                <span class="logo-mark">S</span>
+                ShopEase
+            </a>
+
+            <div class="nav-links">
+                <a th:href="@{/}">Home</a>
+                <a th:href="@{/#products}">Shop</a>
+                <a class="cart-link" th:href="@{/cart}">
+                    <span aria-hidden="true">🛒</span> Cart
+                </a>
+                <a th:href="@{/admin/login}">Admin</a>
+            </div>
+
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero-wrap">
+        <div class="hero">
+
+            <div class="hero-content">
+                <div class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    Your everyday shopping destination
+                </div>
+
+                <h1>Find your next <span>favorite.</span></h1>
+
+                <p>
+                    Discover products you'll love, explore new essentials,
+                    and enjoy a simpler way to shop — all in one place.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="#products">
+                        Explore products <span aria-hidden="true">→</span>
+                    </a>
+
+                    <a class="btn btn-secondary" href="#categories">
+                        Browse categories
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-art" aria-label="Shopping illustration">
+                <div class="hero-orbit"></div>
+                <div class="hero-product" aria-hidden="true">🛍️</div>
+
+                <div class="floating-tag tag-one">
+                    <span class="tag-icon">✨</span>
+                    <span>
+                        <strong>Made for you</strong>
+                        Everyday discoveries
+                    </span>
+                </div>
+
+                <div class="floating-tag tag-two">
+                    <span class="tag-icon">💙</span>
+                    <span>
+                        <strong>Easy shopping</strong>
+                        Browse at your pace
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Store benefits -->
+    <section class="benefits" aria-label="Shopping benefits">
+
+        <div class="benefit">
+            <div class="benefit-icon" aria-hidden="true">📦</div>
+            <div>
+                <strong>Simple ordering</strong>
+                <span>A straightforward shopping experience</span>
+            </div>
+        </div>
+
+        <div class="benefit">
+            <div class="benefit-icon" aria-hidden="true">🔒</div>
+            <div>
+                <strong>Secure checkout</strong>
+                <span>Shop through a protected checkout flow</span>
+            </div>
+        </div>
+
+        <div class="benefit">
+            <div class="benefit-icon" aria-hidden="true">💬</div>
+            <div>
+                <strong>Here to help</strong>
+                <span>A convenient place to find your essentials</span>
+            </div>
+        </div>
+
+    </section>
+
+    <main class="main-content">
+
+        <!-- Categories -->
+        <section id="categories" aria-labelledby="categoryHeading">
+
+            <div class="section-heading">
+                <div>
+                    <div class="section-kicker">Explore the store</div>
+                    <h2 id="categoryHeading">Shop your way</h2>
+                    <p class="section-description">
+                        A few places to start your next discovery.
+                    </p>
+                </div>
+            </div>
+
+            <div class="category-grid">
+
+                <a class="category-card" href="#products" data-category-search="electronics">
+                    <div class="category-icon" aria-hidden="true">🎧</div>
+                    <div>
+                        <strong>Electronics</strong>
+                        <span>Tech and gadgets ↗</span>
+                    </div>
+                </a>
+
+                <a class="category-card" href="#products" data-category-search="fashion">
+                    <div class="category-icon" aria-hidden="true">👟</div>
+                    <div>
+                        <strong>Fashion</strong>
+                        <span>Everyday style ↗</span>
+                    </div>
+                </a>
+
+                <a class="category-card" href="#products" data-category-search="home">
+                    <div class="category-icon" aria-hidden="true">🏡</div>
+                    <div>
+                        <strong>Home &amp; Living</strong>
+                        <span>Make it your space ↗</span>
+                    </div>
+                </a>
+
+                <a class="category-card" href="#products" data-category-search="accessories">
+                    <div class="category-icon" aria-hidden="true">⌚</div>
+                    <div>
+                        <strong>Accessories</strong>
+                        <span>Finishing touches ↗</span>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- Products and search -->
+        <section class="product-section" id="products" aria-labelledby="productHeading">
+
+            <div class="section-heading">
+                <div>
+                    <div class="section-kicker">Picked for discovery</div>
+                    <h2 id="productHeading">Explore our products</h2>
+                    <p class="section-description">
+                        Find something useful, fun, or just right for you.
+                    </p>
+                </div>
+
+                <div class="search-panel">
+                    <span class="search-icon" aria-hidden="true">⌕</span>
+                    <input type="search" id="searchInput" placeholder="Search products..." aria-label="Search products"
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <p id="searchMessage" role="status" aria-live="polite">
+                Loading products...
+            </p>
+
+            <div id="productContainer" class="product-grid" aria-label="Product list">
+
+                <div class="empty-state">
+                    <span class="empty-icon" aria-hidden="true">🛍️</span>
+                    <h3>Getting the store ready</h3>
+                    <p>Your products will appear here in a moment.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Bottom promotion -->
+        <section class="bottom-promo" aria-label="Continue shopping">
+            <div>
+                <h2>Your next great find is waiting.</h2>
+                <p>Explore the collection and discover something you love.</p>
+            </div>
+
+            <a class="btn" href="#products">
+                Start exploring <span aria-hidden="true">→</span>
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+
+            <div class="footer-brand">
+                <a class="logo" th:href="@{/}">
+                    <span class="logo-mark">S</span>
+                    ShopEase
+                </a>
+
+                <p>
+                    A simpler place to discover everyday products.
+                    Thanks for shopping with us.
+                </p>
+            </div>
+
+            <nav class="footer-links" aria-label="Footer navigation">
+                <a th:href="@{/}">Home</a>
+                <a th:href="@{/#products}">Shop products</a>
+                <a th:href="@{/cart}">Your cart</a>
+                <a th:href="@{/admin/login}">Admin portal</a>
+            </nav>
+
+        </div>
+
+        <div class="copyright">
+            &copy; 2026 ShopEase. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Keep the existing product search JavaScript -->
+    <script th:src="@{/js/search.js}" defer></script>
+
+    <!-- Category shortcuts use the same search input -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("searchInput");
+
+            if (!searchInput) {
+                return;
+            }
+
+            document.querySelectorAll("[data-category-search]")
+                .forEach(function (link) {
+                    link.addEventListener("click", function () {
+                        searchInput.value =
+                            link.getAttribute("data-category-search");
+
+                        searchInput.dispatchEvent(
+                            new Event("input", { bubbles: true })
+                        );
+                    });
+                });
+        });
+    </script>
+
+</body>
+
+</html>
